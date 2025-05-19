@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBet - Apostas Esportivas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f8f8;
+        }
+        
+        .title-font {
+            font-family: 'Bebas Neue', cursive;
+        }
+        
+        .nature-bg {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nature-bg::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%234caf50' fill-opacity='0.2' d='M49,-50.3C62.4,-39.2,71.1,-22.8,72.5,-5.3C73.9,12.2,68,30.7,54.5,41.9C41,53,19.9,56.8,1.3,55.5C-17.3,54.2,-34.6,47.8,-47.5,36.7C-60.4,25.6,-68.9,9.7,-67.5,-5.8C-66.1,-21.3,-54.8,-36.4,-40.3,-47.3C-25.8,-58.2,-7.9,-64.8,8.8,-73.6C25.5,-82.4,50.9,-93.4,62.2,-84.4C73.5,-75.4,70.6,-46.4,68.8,-22.4C67,1.7,66.2,20.8,59.5,36.2C52.8,51.6,40.2,63.3,25.5,71.1C10.8,78.9,-6.1,82.8,-21.3,79.1C-36.5,75.4,-50.1,64.1,-58.1,50.1C-66.1,36.1,-68.6,19.4,-68.4,3.3C-68.2,-12.8,-65.3,-25.6,-56.5,-36.1C-47.7,-46.6,-33,-54.8,-18.3,-64.9C-3.6,-75,11.1,-86.9,24.2,-83.3C37.3,-79.7,48.8,-60.5,49,-50.3Z' transform='translate(100 100)' /%3E%3C/svg%3E");
+            background-size: 50%;
+            opacity: 0.6;
+            animation: nature 15s linear infinite;
+        }
+        
+        @keyframes nature {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .bet-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .bet-option {
+            transition: all 0.2s ease;
+        }
+        
+        .bet-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .bet-option.selected {
+            background-color: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .bet-value {
+            transition: all 0.2s ease;
+        }
+        
+        .bet-value:hover {
+            transform: scale(1.1);
+            background-color: #2e7d32;
+            color: white;
+        }
+        
+        .bet-value.selected {
+            background-color: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .confirm-btn {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .nav-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .game-date {
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .leaf-icon {
+            color: #2e7d32;
+        }
+
+        .money-icon {
+            color: #2e7d32;
+        }
+
+        .team-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .draw-option {
+            background-color: #f0f0f0;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .draw-option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .draw-option.selected {
+            background-color: #555;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="nature-bg text-white py-6 relative">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="title-font text-4xl md:text-5xl">AGROBET</h1>
+                    <p class="text-sm md:text-base">Apostas Esportivas com Raízes no Agro</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="results-btn" class="nav-btn bg-white text-green-800 px-4 py-2 rounded-full font-bold flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Resultados
+                    </button>
+                    <div class="bg-white text-green-800 px-4 py-2 rounded-full font-bold">
+                        <i class="fas fa-coins mr-2 money-icon"></i>
+                        <span id="user-balance">100</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="title-font text-3xl md:text-4xl text-green-800 mb-8 text-center">JOGOS DISPONÍVEIS PARA APOSTAR</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="games-container">
+            <!-- Games will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">AgroBet - Apostas Esportivas com Raízes no Agro</p>
+            <p class="text-sm text-gray-400">© 2025 Todos os direitos reservados. Desenvolvido por Viniciosxt</p>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none z-50">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4">
+            <div class="bg-green-800 text-white py-3 px-4 rounded-t-lg">
+                <h3 class="title-font text-2xl text-center">CONFIRMAÇÃO DE APOSTA</h3>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <p class="font-bold">Jogo:</p>
+                    <p id="modal-game" class="text-lg"></p>
+                    <p id="modal-game-date" class="text-sm text-gray-600"></p>
+                </div>
+                <div class="mb-4">
+                    <p class="font-bold">Palpite:</p>
+                    <p id="modal-bet" class="text-lg"></p>
+                </div>
+                <div class="mb-6">
+                    <p class="font-bold">Valor:</p>
+                    <p id="modal-value" class="text-xl font-bold text-green-800"></p>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="cancel-bet" class="flex-1 py-2 border border-gray-300 rounded-md font-bold">
+                        Cancelar
+                    </button>
+                    <button id="confirm-bet" class="flex-1 py-2 bg-green-800 text-white rounded-md font-bold">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div id="whatsapp-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none z-50">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4">
+            <div class="bg-green-800 text-white py-3 px-4 rounded-t-lg">
+                <h3 class="title-font text-2xl text-center">CONFIRMAR APOSTA VIA WHATSAPP</h3>
+            </div>
+            <div class="p-6">
+                <div class="mb-6 text-center">
+                    <div class="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-whatsapp text-4xl text-green-500"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">Sua aposta está quase confirmada!</h4>
+                    <p class="text-gray-700 mb-4">Para finalizar, envie a confirmação para o WhatsApp do AgroBet.</p>
+                    
+                    <div class="bg-gray-100 rounded-lg p-4 mb-4 text-left">
+                        <div class="flex items-start mb-2">
+                            <div class="font-bold mr-2">Jogo:</div>
+                            <div id="whatsapp-game"></div>
+                        </div>
+                        <div class="flex items-start mb-2">
+                            <div class="font-bold mr-2">Data:</div>
+                            <div id="whatsapp-date"></div>
+                        </div>
+                        <div class="flex items-start mb-2">
+                            <div class="font-bold mr-2">Palpite:</div>
+                            <div id="whatsapp-bet"></div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="font-bold mr-2">Valor:</div>
+                            <div id="whatsapp-value" class="font-bold text-green-800"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="close-whatsapp" class="flex-1 py-2 border border-gray-300 rounded-md font-bold">
+                        Fechar
+                    </button>
+                    <a id="whatsapp-link" href="#" target="_blank" class="flex-1 py-2 bg-green-500 text-white rounded-md font-bold flex items-center justify-center">
+                        <i class="fab fa-whatsapp mr-2"></i> Enviar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none z-50">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="bg-green-800 text-white py-3 px-4 rounded-t-lg sticky top-0">
+                <div class="flex justify-between items-center">
+                    <h3 class="title-font text-2xl">RESULTADOS</h3>
+                    <button id="close-results" class="text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="mb-6">
+                    <h4 class="font-bold text-lg mb-3 text-green-800 border-b pb-2">RESULTADOS ANTERIORES</h4>
+                    <div class="space-y-4">
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="font-bold">FLAMENGO 2 x 1 PALMEIRAS</div>
+                                <div class="text-sm text-gray-600">10/10/2025</div>
+                            </div>
+                            <div class="text-sm text-green-600 font-bold">Vencedor: FLAMENGO</div>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="font-bold">ATLÉTICO-MG 0 x 0 CORINTHIANS</div>
+                                <div class="text-sm text-gray-600">08/10/2025</div>
+                            </div>
+                            <div class="text-sm text-blue-600 font-bold">Resultado: EMPATE</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-3 text-green-800 border-b pb-2">PRÓXIMOS JOGOS</h4>
+                    <div class="space-y-4">
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="font-bold">FLAMENGO vs PALMEIRAS</div>
+                                <div class="text-sm text-gray-600">15/10/2025 - 20:00</div>
+                            </div>
+                            <div class="text-sm">Apostas abertas!</div>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="font-bold">ATLÉTICO-MG vs CORINTHIANS</div>
+                                <div class="text-sm text-gray-600">18/10/2025 - 21:30</div>
+                            </div>
+                            <div class="text-sm">Apostas abertas!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game configuration - just update this object to change team logos and details
+        const gamesConfig = {
+            1: {
+                home: {
+                    name: "FLAMENGO",
+                    logo: "https://logodownload.org/wp-content/uploads/2016/09/flamengo-logo-escudo-novo.png"
+                },
+                away: {
+                    name: "PALMEIRAS",
+                    logo: "https://clipground.com/images/palmeiras-logo-png.png"
+                },
+                date: "15/10/2025 - 20:00",
+                competition: "CAMPEONATO BRASILEIRO"
+            },
+            2: {
+                home: {
+                    name: "ATLÉTICO-MG",
+                    logo: "https://logodownload.org/wp-content/uploads/2016/10/atletico-mineiro-logo-escudo.png"
+                },
+                away: {
+                    name: "CORINTHIANS",
+                    logo: "https://logodownload.org/wp-content/uploads/2016/11/Corinthians-logo-escudo-1.png"
+                },
+                date: "18/10/2025 - 21:30",
+                competition: "COPA DO BRASIL"
+            }
+        };
+
+        // Current bet data
+        let currentBet = {
+            game: null,
+            option: null,
+            value: null
+        };
+        
+        // DOM elements
+        const modal = document.getElementById('confirmation-modal');
+        const whatsappModal = document.getElementById('whatsapp-modal');
+        const resultsModal = document.getElementById('results-modal');
+        const modalGame = document.getElementById('modal-game');
+        const modalGameDate = document.getElementById('modal-game-date');
+        const modalBet = document.getElementById('modal-bet');
+        const modalValue = document.getElementById('modal-value');
+        const whatsappLink = document.getElementById('whatsapp-link');
+        const whatsappGame = document.getElementById('whatsapp-game');
+        const whatsappDate = document.getElementById('whatsapp-date');
+        const whatsappBet = document.getElementById('whatsapp-bet');
+        const whatsappValue = document.getElementById('whatsapp-value');
+        const gamesContainer = document.getElementById('games-container');
+
+        // Render games based on configuration
+        function renderGames() {
+            let gamesHTML = '';
+            
+            for (const gameId in gamesConfig) {
+                const game = gamesConfig[gameId];
+                
+                gamesHTML += `
+                <div class="bet-card bg-white rounded-lg overflow-hidden border border-gray-200">
+                    <div class="bg-green-800 text-white py-3 px-4 flex justify-between items-center">
+                        <h3 class="title-font text-2xl">${game.competition}</h3>
+                        <div class="game-date">${game.date}</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="text-center flex-1">
+                                <img src="${game.home.logo}" alt="${game.home.name}" class="team-logo mb-2">
+                                <div class="team-name">${game.home.name}</div>
+                            </div>
+                            <div class="text-2xl font-bold mx-4">VS</div>
+                            <div class="text-center flex-1">
+                                <img src="${game.away.logo}" alt="${game.away.name}" class="team-logo mb-2">
+                                <div class="team-name">${game.away.name}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold mb-3 text-center">ESCOLHA SEU PALPITE:</h4>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button class="bet-option py-2 px-1 border border-green-800 rounded-md font-bold text-green-800" data-game="${gameId}" data-option="home">
+                                    <div>${game.home.name}</div>
+                                </button>
+                                <button class="bet-option draw-option py-2 px-1 border border-gray-400 rounded-md font-bold" data-game="${gameId}" data-option="empate">
+                                    <div>EMPATE</div>
+                                </button>
+                                <button class="bet-option py-2 px-1 border border-green-800 rounded-md font-bold text-green-800" data-game="${gameId}" data-option="away">
+                                    <div>${game.away.name}</div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold mb-3 text-center">VALOR DA APOSTA:</h4>
+                            <div class="grid grid-cols-4 gap-3">
+                                <button class="bet-value py-2 border border-green-800 rounded-md font-bold text-green-800" data-value="5">R$ 5</button>
+                                <button class="bet-value py-2 border border-green-800 rounded-md font-bold text-green-800" data-value="10">R$ 10</button>
+                                <button class="bet-value py-2 border border-green-800 rounded-md font-bold text-green-800" data-value="25">R$ 25</button>
+                                <button class="bet-value py-2 border border-green-800 rounded-md font-bold text-green-800" data-value="50">R$ 50</button>
+                            </div>
+                        </div>
+                        
+                        <button class="confirm-btn w-full py-3 rounded-md text-white font-bold" data-game="${gameId}">
+                            <i class="fas fa-leaf mr-2"></i> CONFIRMAR APOSTA
+                        </button>
+                    </div>
+                </div>
+                `;
+            }
+            
+            gamesContainer.innerHTML = gamesHTML;
+            
+            // Initialize event listeners after rendering
+            initializeEventListeners();
+        }
+
+        // Initialize all event listeners
+        function initializeEventListeners() {
+            // Results button
+            document.getElementById('results-btn').addEventListener('click', function() {
+                resultsModal.classList.add('show');
+            });
+            
+            // Close results modal
+            document.getElementById('close-results').addEventListener('click', function() {
+                resultsModal.classList.remove('show');
+            });
+            
+            // Bet options click handlers
+            document.querySelectorAll('.bet-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const gameId = this.dataset.game;
+                    const option = this.dataset.option;
+                    
+                    // Remove selected class from all options in this game
+                    document.querySelectorAll(`.bet-option[data-game="${gameId}"]`).forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store selection
+                    currentBet.game = gameId;
+                    currentBet.option = option;
+                });
+            });
+            
+            // Bet values click handlers
+            document.querySelectorAll('.bet-value').forEach(value => {
+                value.addEventListener('click', function() {
+                    const betValue = this.dataset.value;
+                    
+                    // Remove selected class from all values
+                    document.querySelectorAll('.bet-value').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked value
+                    this.classList.add('selected');
+                    
+                    // Store selection
+                    currentBet.value = betValue;
+                });
+            });
+            
+            // Confirm bet buttons
+            document.querySelectorAll('.confirm-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = this.dataset.game;
+                    
+                    // Check if all fields are filled
+                    if (!currentBet.game || !currentBet.option || !currentBet.value) {
+                        alert('Por favor, selecione uma opção e um valor para apostar.');
+                        return;
+                    }
+                    
+                    // Check if the bet is for this game
+                    if (currentBet.game !== gameId) {
+                        alert('Por favor, selecione uma opção para este jogo.');
+                        return;
+                    }
+                    
+                    // Show confirmation modal
+                    showConfirmationModal();
+                });
+            });
+            
+            // Hide confirmation modal
+            document.getElementById('cancel-bet').addEventListener('click', function() {
+                modal.classList.remove('show');
+            });
+            
+            // Confirm bet
+            document.getElementById('confirm-bet').addEventListener('click', function() {
+                modal.classList.remove('show');
+                
+                // Prepare WhatsApp message
+                const game = gamesConfig[currentBet.game];
+                let betText = '';
+                
+                if (currentBet.option === 'home') {
+                    betText = game.home.name;
+                } else if (currentBet.option === 'away') {
+                    betText = game.away.name;
+                } else if (currentBet.option === 'empate') {
+                    betText = 'EMPATE';
+                }
+                
+                whatsappGame.textContent = `${game.home.name} vs ${game.away.name}`;
+                whatsappDate.textContent = game.date;
+                whatsappBet.textContent = betText;
+                whatsappValue.textContent = `R$ ${currentBet.value}`;
+                
+                const message = `🌱 *CONFIRMAÇÃO DE APOSTA - AGROBET* 🌱\n\n` +
+                               `⚽ *Jogo:* ${game.home.name} vs ${game.away.name}\n` +
+                               `📅 *Data:* ${game.date}\n` +
+                               `🔮 *Palpite:* ${betText}\n` +
+                               `💰 *Valor da Aposta:* R$ ${currentBet.value}\n\n` +
+                               `! 🚜`;
+                
+                const encodedMessage = encodeURIComponent(message);
+                whatsappLink.href = `https://wa.me/5538998333666?text=${encodedMessage}`;
+                
+                // Show WhatsApp modal
+                whatsappModal.classList.add('show');
+            });
+            
+            // Close WhatsApp modal
+            document.getElementById('close-whatsapp').addEventListener('click', function() {
+                whatsappModal.classList.remove('show');
+            });
+            
+            // Close modals when clicking outside
+            [modal, whatsappModal, resultsModal].forEach(m => {
+                m.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                    }
+                });
+            });
+        }
+
+        // Show confirmation modal
+        function showConfirmationModal() {
+            const game = gamesConfig[currentBet.game];
+            let betText = '';
+            
+            if (currentBet.option === 'home') {
+                betText = game.home.name;
+            } else if (currentBet.option === 'away') {
+                betText = game.away.name;
+            } else if (currentBet.option === 'empate') {
+                betText = 'EMPATE';
+            }
+            
+            modalGame.textContent = `${game.home.name} vs ${game.away.name}`;
+            modalGameDate.textContent = game.date;
+            modalBet.textContent = betText;
+            modalValue.textContent = `R$ ${currentBet.value}`;
+            
+            modal.classList.add('show');
+        }
+
+        // Initialize the page
+        renderGames();
+    </script>
+</body>
+</html>
