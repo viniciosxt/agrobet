@@ -166,7 +166,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <h1 class="title-font text-4xl md:text-5xl">AGROBET</h1>
-                    <p class="text-sm md:text-base">Apostas Esportivas com Raízes no Agro</p>
+                    <p class="text-sm md:text-base">Apostas Esportivas</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button id="results-btn" class="nav-btn bg-white text-green-800 px-4 py-2 rounded-full font-bold flex items-center">
@@ -175,7 +175,7 @@
                     </button>
                     <div class="bg-white text-green-800 px-4 py-2 rounded-full font-bold">
                         <i class="fas fa-coins mr-2 money-icon"></i>
-                        <span id="user-balance">100</span>
+                        <span id="user-balance"></span>
                     </div>
                 </div>
             </div>
@@ -194,7 +194,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-6">
         <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">AgroBet - Apostas Esportivas com Raízes no Agro</p>
+            <p class="mb-2">AgroBet - Apostas Esportivas</p>
             <p class="text-sm text-gray-400">© 2025 Todos os direitos reservados. Desenvolvido por Viniciosxt</p>
         </div>
     </footer>
@@ -344,7 +344,7 @@
                     logo: "https://clipground.com/images/palmeiras-logo-png.png"
                 },
                 date: "15/10/2025 - 20:00",
-                competition: "CAMPEONATO BRASILEIRO"
+                competition: "CAMPEONATO FUTSAL"
             },
             2: {
                 home: {
@@ -356,7 +356,7 @@
                     logo: "https://logodownload.org/wp-content/uploads/2016/11/Corinthians-logo-escudo-1.png"
                 },
                 date: "18/10/2025 - 21:30",
-                competition: "COPA DO BRASIL"
+                competition: "CAMPEONATO FUTSAL"
             }
         };
 
@@ -550,7 +550,7 @@
                                `📅 *Data:* ${game.date}\n` +
                                `🔮 *Palpite:* ${betText}\n` +
                                `💰 *Valor da Aposta:* R$ ${currentBet.value}\n\n` +
-                               `! 🚜`;
+                               ``;
                 
                 const encodedMessage = encodeURIComponent(message);
                 whatsappLink.href = `https://wa.me/5538998333666?text=${encodedMessage}`;
